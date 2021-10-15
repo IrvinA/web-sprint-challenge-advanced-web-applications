@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
+import axiosWithAuth from '../utils/axiosWithAuth';
 
 const initialArticle = {
     id:"",
@@ -31,7 +33,18 @@ const EditForm = (props)=> {
         handleEditCancel();
     }
 
-    return(<FormContainer onSubmit={handleSubmit}>
+    useEffect(() => {
+        axiosWithAuth()
+        .get(`http://localhost:5000/api/articles/${editId}`)
+            .then(res => {
+                setArticle(res.data);
+            })
+            .catch(err => {
+                console.error(err);
+            })
+    }, [])
+
+    return(<FormContainer >
         <h3>Edit Article</h3>
         <div>
             <label>Headline</label>
@@ -49,16 +62,12 @@ const EditForm = (props)=> {
             <label>Body</label>
             <input value={article.body} id="body" name="body" onChange={handleChange}/>
         </div>
-        <Button id="editButton">Edit Article</Button>
+        <Button onClick={handleSubmit} id="editButton">Edit Article</Button>
         <Button onClick={handleCancel}>Cancel</Button>
     </FormContainer>);
 }
 
 export default EditForm;
-
-//Task List:
-// 1. On mount, make a http request to retrieve the article with the id `editId.`
-// 2. Save result of request to local state.
 
 const FormContainer = styled.form`
     padding: 1em;

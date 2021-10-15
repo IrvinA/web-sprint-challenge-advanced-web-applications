@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import PrivateRoute from './PrivateRoute';
 import styled from 'styled-components';
 
@@ -15,6 +15,11 @@ const App = () => {
       <LambdaHeader/>
       <Header/>
       <RouteContainer>
+        <PrivateRoute path='/view'component={View}/>
+        <PrivateRoute path='/logout' component={Logout}/>
+        <Route path='/login'>
+          <Login/>
+        </Route>
         <Route exact path="/">
           <Login/>
         </Route>          
@@ -24,12 +29,6 @@ const App = () => {
 }
 
 export default App;
-
-//Task List
-//1. Create and import PrivateRoute component.
-//2. Create a Route for Login pointing to '/login.'
-//3. Create a PrivateRoute for View component point to '/view.'
-//4. Create a PrivateRoute for Logout component pointing to '/logout.'
 
 
 const AppContainer = styled.div`

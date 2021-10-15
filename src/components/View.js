@@ -1,18 +1,35 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import Article from './Article';
 import EditForm from './EditForm';
+import articleService from '../services/articleServices';
+import axiosWithAuth from '../utils/axiosWithAuth';
 
 const View = (props) => {
     const [articles, setArticles] = useState([]);
     const [editing, setEditing] = useState(false);
     const [editId, setEditId] = useState();
-
+    const {push} = useHistory();
     const handleDelete = (id) => {
+        axiosWithAuth()
+        .delete(`http://localhost:5000/api/articles/${id}`)
+            .then(res => {
+                setArticles(res.data);
+                push('/view');
+            })
+            .catch(err => console.error(err))
     }
 
     const handleEdit = (article) => {
+        axiosWithAuth()
+        .put(`http://localhost:5000/api/articles/${article.id}`, article)
+            .then(res => {
+                setArticles(res.data);
+                push('/view')
+            })
+            .catch(err => console.error(err))
     }
 
     const handleEditSelect = (id)=> {
@@ -24,11 +41,17 @@ const View = (props) => {
         setEditing(false);
     }
 
-    return(<ComponentContainer>
+    useEffect(() => {
+        articleService(setArticles);
+    },[])
+
+    return(
+    <ComponentContainer>
         <HeaderContainer>View Articles</HeaderContainer>
         <ContentContainer flexDirection="row">
             <ArticleContainer>
                 {
+                    articles &&
                     articles.map(article => {
                         return <ArticleDivider key={article.id}>
                             <Article key={article.id} article={article} handleDelete={handleDelete} handleEditSelect={handleEditSelect}/>
@@ -45,12 +68,6 @@ const View = (props) => {
 }
 
 export default View;
-
-//Task List:
-//1. Build and import axiosWithAuth module in the utils.
-//2. When the component mounts, make an http request that adds all articles to state.
-//3. Complete handleDelete method. It should make a request that delete the article with the included id.
-//4. Complete handleEdit method. It should make a request that updates the article that matches the included article param.
 
 
 const Container = styled.div`
