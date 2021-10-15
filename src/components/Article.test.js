@@ -9,7 +9,7 @@ import { render } from 'react-dom';
 import { click } from '@testing-library/user-event/dist/click';
 
 const testArticle = {
-    id: nanoid(5),
+    id: Math.floor(Math.random()*800),
     headline: "Less than half of Seattle homes have air conditioning. After a deadly heat wave, ‘everybody’ wants it.",
     createdOn: moment().subtract(Math.random()*10, "days").format(),
     author:"",

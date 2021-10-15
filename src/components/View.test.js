@@ -4,18 +4,18 @@ import View from './View';
 
 const testArticles = [
     {
-      id: nanoid(5),
+      id: Math.floor(Math.random()*800),
       headline: "Less than half of Seattle homes have air conditioning. After a deadly heat wave, ‘everybody’ wants it.",
-      createdOn: moment().subtract(Math.random()*10, "days").format(),
+      createdOn: "Aug 12",
       author:"",
       image: 134,
       summary: "Triple-digit temperatures led to a spike in demand across the region.",
       body: "Inside the attic of a one-story gray house in a Seattle suburb last week, Jeff Bryson gingerly strapped copper piping across the rafters while wearing a white face mask and a headlamp. The temperature was about 110 degrees in the tight space, which was covered in insulation dust. His work was meant to cool the rest of the home."   
   },
   {
-      id: nanoid(5),
+      id: Math.floor(Math.random()*800),
       headline: "Community College of Philadelphia to require vaccines, the first public college in the region to do so.",
-      createdOn: moment().subtract(Math.random()*10, "days").format(),
+      createdOn: "Aug 11",
       author: "Susan Snyder",
       image: 175,
       summary: "The requirement, which will allow exemptions for medical and religious reasons, won’t be in place for the start of the semester.",
@@ -23,8 +23,8 @@ const testArticles = [
   },
   {
       headline: "A tropical depression could form in the next few days, forecasters say",
-      id: nanoid(5),
-      createdOn: moment().subtract(Math.random()*10, "days").format(),
+      id: Math.floor(Math.random()*800),
+      createdOn: "Aug 10",
       author: "Alex Harris",
       image: 171,
       summary: "Forecasters said the system will likely turn into a tropical depression late this weekend or early next week as it moves west-northwest.",
@@ -33,18 +33,15 @@ const testArticles = [
 ]
 
 test("renders zero articles without errors", async () => {
-    render(<View articles={[]}/>);
-    let articles = screen.queryAllByTestId('article');
-    expect(articles).toHaveLength(0);
+    render(<View />);
+    await waitFor (async () => {
+        let articles = await screen.queryAllByTestId('article');
+        expect(articles).toHaveLength(0);
+    })
 });
 
 test("renders three articles without errors", async ()=> {
-    const { rerender } = render(<View articles={[]}/>);
-    await waitFor (async ()=> {
-        let articles = await screen.queryAllByTestId('article');
-        expect(articles).toHaveLength(0);
-    });
-    rerender(<View articles={testArticles}/>);
+    render(<View articles={testArticles} />);
     await waitFor (async ()=> {
         let articles = await screen.queryAllByTestId('article');
         expect(articles).toHaveLength(3);

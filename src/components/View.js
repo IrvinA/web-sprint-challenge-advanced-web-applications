@@ -12,6 +12,7 @@ const View = (props) => {
     const [editing, setEditing] = useState(false);
     const [editId, setEditId] = useState();
     const {push} = useHistory();
+
     const handleDelete = (id) => {
         axiosWithAuth()
         .delete(`http://localhost:5000/api/articles/${id}`)
@@ -19,7 +20,6 @@ const View = (props) => {
                 setArticles(res.data);
                 push('/view');
             })
-            .catch(err => console.error(err))
     }
 
     const handleEdit = (article) => {
@@ -29,7 +29,6 @@ const View = (props) => {
                 setArticles(res.data);
                 push('/view')
             })
-            .catch(err => console.error(err))
     }
 
     const handleEditSelect = (id)=> {
